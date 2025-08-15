@@ -66,7 +66,7 @@ function createDefaultOwner() {
     const bcrypt = require('bcryptjs');
     const defaultOwner = {
         username: 'arijit_panda',
-        email: 'arijit@dreamtosuccess.com',
+        email: 'extrabenefit1@gmail.com',
         password: 'admin123', // Change this in production!
         role: 'owner'
     };
