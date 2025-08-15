@@ -205,7 +205,7 @@ FRONTEND_URL=https://yoursite.com # CORS origin
 ## 📞 Support
 
 For technical support or questions:
-- **Email**: info@dreamtosuccess.com
+- **Email**: extrabenefit1@gmail.com
 - **Business**: Arijit Panda - Dream to Success
 
 ## 📄 License

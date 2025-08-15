@@ -97,7 +97,7 @@ if (loginForm) {
         }
         
         // Simulate login (in real app, this would connect to backend)
-        if (email === 'demo@arijitpanda.com' && password === 'demo123') {
+        if (email === 'extrabenefit1@gmail.com' && password === 'demo123') {
             alert('Login successful! Redirecting to dashboard...');
             window.location.href = 'dashboard.html';
         } else {
