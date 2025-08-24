@@ -1,71 +1,24 @@
-const express = require('express');
-const { body, validationResult } = require('express-validator');
-const { dbHelper } = require('../config/database');
-
-const router = express.Router();
-
-// Submit contact form
-router.post('/submit', [
-    body('name').notEmpty().trim().withMessage('Name is required'),
-    body('email').isEmail().withMessage('Valid email is required'),
-    body('phone').optional().trim(),
-    body('subject').notEmpty().trim().withMessage('Subject is required'),
-    body('message').notEmpty().trim().withMessage('Message is required')
-], async (req, res) => {
-    try {
-        // Check validation errors
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ 
-                error: 'Validation failed',
-                details: errors.array() 
-            });
-        }
-
-        const { name, email, phone, subject, message } = req.body;
-
-        // Store contact submission
-        const result = await dbHelper.run(
-            `INSERT INTO contacts (name, email, phone, subject, message, status) 
-             VALUES (?, ?, ?, ?, ?, 'new')`,
-            [name, email, phone, subject, message]
-        );
-
-        res.status(201).json({
-            message: 'Contact form submitted successfully',
-            contactId: result.id
-        });
-
-    } catch (error) {
-        console.error('Contact submission error:', error);
-        res.status(500).json({ error: 'Failed to submit contact form' });
-    }
-});
-
-// Get contact form statistics (public info)
-router.get('/stats', async (req, res) => {
-    try {
-        // Get total contacts count
-        const totalContacts = await dbHelper.get(
-            'SELECT COUNT(*) as count FROM contacts'
-        );
-
-        // Get contacts by status
-        const statusStats = await dbHelper.all(
-            `SELECT status, COUNT(*) as count 
-             FROM contacts 
-             GROUP BY status`
-        );
-
-        res.json({
-            totalContacts: totalContacts.count,
-            statusBreakdown: statusStats
-        });
-
-    } catch (error) {
-        console.error('Stats error:', error);
-        res.status(500).json({ error: 'Failed to get statistics' });
-    }
-});
-
-module.exports = router;
+/*
+ * CONTACT ROUTES - REMOVED FOR STATIC SITE
+ * 
+ * This file previously contained Express.js routes for handling contact form
+ * submissions and contact-related functionality.
+ * 
+ * Original functionality included:
+ * - Contact form submission processing
+ * - Email validation and sanitization
+ * - Database storage of contact inquiries
+ * - Contact form statistics and analytics
+ * - Rate limiting for form submissions
+ * - Email notifications for new contacts
+ * 
+ * All backend contact processing has been removed for static site conversion.
+ * Contact forms may still exist in the frontend but will not have functional
+ * backend processing.
+ * 
+ * For a production static site, consider implementing:
+ * - Static form handling services (Netlify Forms, Formspree, EmailJS)
+ * - Client-side form validation
+ * - Third-party contact management (Google Forms, Typeform, etc.)
+ * - Email integration services (SendGrid, Mailchimp, etc.)
+ */

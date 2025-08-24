@@ -52,27 +52,59 @@ window.addEventListener('scroll', () => {
 // Form validation for contact form
 const contactForm = document.querySelector('#contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Basic validation
         const name = document.querySelector('#name').value;
         const email = document.querySelector('#email').value;
+        const subject = document.querySelector('#subject')?.value || 'General Inquiry';
         const message = document.querySelector('#message').value;
         
         if (!name || !email || !message) {
-            alert('Please fill in all fields');
+            if (window.showMessage) {
+                window.showMessage('Please fill in all required fields', 'error');
+            } else {
+                alert('Please fill in all required fields');
+            }
             return;
         }
         
         if (!isValidEmail(email)) {
-            alert('Please enter a valid email address');
+            if (window.showMessage) {
+                window.showMessage('Please enter a valid email address', 'error');
+            } else {
+                alert('Please enter a valid email address');
+            }
             return;
         }
         
-        // Simulate form submission
-        alert('Thank you for your message! We will get back to you soon.');
-        contactForm.reset();
+        // Use mock API if available, otherwise show simple success message
+        if (window.contactAPI) {
+            try {
+                await window.contactAPI.submit({
+                    name: name,
+                    email: email,
+                    subject: subject,
+                    message: message
+                });
+                contactForm.reset();
+            } catch (error) {
+                if (window.showMessage) {
+                    window.showMessage(error.message, 'error');
+                } else {
+                    alert('Error: ' + error.message);
+                }
+            }
+        } else {
+            // Fallback for when api.js is not loaded
+            if (window.showMessage) {
+                window.showMessage('Thank you for your message! We will get back to you soon.', 'success');
+            } else {
+                alert('Thank you for your message! We will get back to you soon.');
+            }
+            contactForm.reset();
+        }
     });
 }
 
